@@ -1,5 +1,7 @@
 # libcr
-Multiplatform asynchronous library for C
+Multiplatform asynchronous library for C.
+Usefull in embedded systems, where we can't halt main loop with simple sleep function.
+Helps to implement finite state machines and cooperative services.
 
 ## Features:
 * easy to porting (also for embedded systems)
