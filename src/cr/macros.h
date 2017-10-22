@@ -43,6 +43,11 @@ THE SOFTWARE.
                                 if ((s) == 0) \
                                         return
 
+#define cr_wait_and_back(t,name)        { \
+                                                cr_routine_wait(scheduler->active_routine, t); \
+                                                cr_routine_set_callback(scheduler->active_routine, name, NULL); \
+                                        } \
+
 #define cr_end()   cr_routine_delete(scheduler->active_routine)
 
 #endif /* CR_MACROS_H_ */
