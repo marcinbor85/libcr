@@ -16,7 +16,7 @@ Helps to implement finite state machines and cooperative services.
 
 ## Examples:
 
-### Asynchronous wait:
+### Asynchronous and conditional wait:
 ```c
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,12 +24,15 @@ Helps to implement finite state machines and cooperative services.
 #include "cr/macros.h"
 
 CR_DECLARE_ROUTINE(part2);
+CR_DECLARE_ROUTINE(part3);
 
 CR_DECLARE_ROUTINE(part1)
 {
         printf("[%05ld] - %s - part1\n", cr_port_get_time(), scheduler->active_routine->name);
         cr_wait(1000, part2);
         printf("[%05ld] - %s - part2\n", cr_port_get_time(), scheduler->active_routine->name);
+        cr_wait_for(cr_port_get_time() > 1500, part3);
+        printf("[%05ld] - %s - part3\n", cr_port_get_time(), scheduler->active_routine->name);
         cr_end();
 }
 
@@ -73,6 +76,7 @@ start
 [01000] - routine_long - part2
 [01200] - routine_repeat
 [01500] - routine_repeat
+[01501] - routine_long - part3
 [01800] - routine_repeat
 end
 ```
