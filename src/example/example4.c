@@ -27,12 +27,15 @@ THE SOFTWARE.
 #include "cr/macros.h"
 
 CR_DECLARE_ROUTINE(part2);
+CR_DECLARE_ROUTINE(part3);
 
 CR_DECLARE_ROUTINE(part1)
 {
         printf("[%05ld] - %s - part1\n", cr_port_get_time(), scheduler->active_routine->name);
         cr_wait(1000, part2);
         printf("[%05ld] - %s - part2\n", cr_port_get_time(), scheduler->active_routine->name);
+        cr_wait_for(cr_port_get_time() > 1500, part3);
+        printf("[%05ld] - %s - part3\n", cr_port_get_time(), scheduler->active_routine->name);
         cr_end();
 }
 
