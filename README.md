@@ -14,6 +14,67 @@ Helps to implement finite state machines and cooperative services.
 
 ## Examples:
 
+### Asynchronous wait:
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "cr/macros.h"
+
+CR_DECLARE_ROUTINE(part2);
+
+CR_DECLARE_ROUTINE(part1)
+{
+        printf("[%05ld] - %s - part1\n", cr_port_get_time(), scheduler->active_routine->name);
+        cr_wait(1000, part2);
+        printf("[%05ld] - %s - part2\n", cr_port_get_time(), scheduler->active_routine->name);
+        cr_end();
+}
+
+static void routine_repeat(struct cr_scheduler *scheduler, void *param)
+{
+        printf("[%05ld] - %s\n", cr_port_get_time(),  scheduler->active_routine->name);
+}
+
+static void loop(struct cr_scheduler *scheduler, void *param)
+{
+        if (cr_port_get_time() > 2000)
+                cr_stop(scheduler);
+}
+
+int main(void)
+{
+        struct cr_scheduler *scheduler;
+
+        scheduler = cr_new("main", loop);
+
+        cr_new_routine(scheduler, "routine_long", part1, NULL);
+        cr_repeat(scheduler, "routine_repeat", 300, 0, routine_repeat, NULL);
+
+        puts("start");
+        while (cr_service(scheduler) != false) {};
+        puts("end");
+
+        cr_delete(scheduler);
+
+        return EXIT_SUCCESS;
+}
+```
+#### Output:
+```
+start
+[00000] - routine_repeat
+[00000] - routine_long - part1
+[00300] - routine_repeat
+[00600] - routine_repeat
+[00900] - routine_repeat
+[01000] - routine_long - part2
+[01200] - routine_repeat
+[01500] - routine_repeat
+[01800] - routine_repeat
+end
+```
+
 ### Basic co-routines:
 ```c
 #include <stdio.h>
