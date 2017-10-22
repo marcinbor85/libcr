@@ -35,6 +35,14 @@ THE SOFTWARE.
                         } \
                         CR_DECLARE_ROUTINE(name) {
 
+#define cr_wait_for(s,name)     { \
+                                        cr_routine_set_callback(scheduler->active_routine, name, NULL); \
+                                } \
+                        } \
+                        CR_DECLARE_ROUTINE(name) { \
+                                if ((s) == 0) \
+                                        return
+
 #define cr_end()   cr_routine_delete(scheduler->active_routine)
 
 #endif /* CR_MACROS_H_ */
