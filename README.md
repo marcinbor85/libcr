@@ -7,10 +7,12 @@ Helps to implement finite state machines and cooperative services.
 * easy to porting (also for embedded systems)
 * dynamic memory allocations for routines and schedulers objects
 * only one thread, hidden main loop operations
+* macro-based but easy to use without them
 * unlimited fast software timers
 * continous, periodic or future parametrized callbacks
 * easy to adapt and extend
 * simple and powerful
+* clear code and "no magic"
 
 ## Examples:
 
